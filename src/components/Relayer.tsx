@@ -2,13 +2,16 @@ import { useState } from "react";
 import { useSigner, useAccount, useNetwork, useWaitForTransaction } from "wagmi";
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { CrossChainMessenger, MessageStatus, CrossChainMessage } from '@eth-optimism/sdk';
+import { ethers } from 'ethers
+
+const l2Provider = new ethers.providers.JsonRpcProvider('https://mainnet.optimism.io', 10)
 
 function getStatusDescription(status: MessageStatus) {
   switch (status) {
     case MessageStatus.UNCONFIRMED_L1_TO_L2_MESSAGE:
       return "Message is an L1 to L2 message and has not been processed by the L2";
     case MessageStatus.FAILED_L1_TO_L2_MESSAGE:
-      return "Message is an L1 to L2 message and the transaction to execute the message failed";
+      return "Message is an L1 to L2 message and the transaction to execute the message failed.";
     case MessageStatus.STATE_ROOT_NOT_PUBLISHED:
       return "Message is an L2 to L1 message and no state root has been published yet";
     case MessageStatus.READY_TO_PROVE:
@@ -61,7 +64,7 @@ export function Relayer() {
     if (message) {
       const messenger = new CrossChainMessenger({
         l1SignerOrProvider: signer,
-        l2SignerOrProvider: "tbd",
+        l2SignerOrProvider: l2Provider,
         l1ChainId: 1,
         l2ChainId: 10,
       });
