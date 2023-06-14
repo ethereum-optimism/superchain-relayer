@@ -1,0 +1,10 @@
+import { Provider } from '@ethersproject/abstract-provider';
+import { Signer } from '@ethersproject/abstract-signer';
+import { BigNumber } from 'ethers';
+import { SignerOrProviderLike, ProviderLike, TransactionLike, NumberLike, AddressLike } from '../interfaces';
+export declare const toSignerOrProvider: (signerOrProvider: SignerOrProviderLike) => Signer | Provider;
+export declare const toProvider: (provider: ProviderLike) => Provider;
+export declare const toTransactionHash: (transaction: TransactionLike) => string;
+export declare const toBigNumber: (num: NumberLike) => BigNumber;
+export declare const toNumber: (num: NumberLike) => number;
+export declare const toAddress: (addr: AddressLike) => string;

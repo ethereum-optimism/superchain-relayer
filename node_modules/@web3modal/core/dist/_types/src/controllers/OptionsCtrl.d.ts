@@ -1,0 +1,27 @@
+import type { OptionsCtrlState } from '../types/controllerTypes';
+export declare const OptionsCtrl: {
+    state: OptionsCtrlState;
+    subscribe(callback: (newState: OptionsCtrlState) => void): () => void;
+    setChains(chains?: OptionsCtrlState['chains']): void;
+    setStandaloneChains(standaloneChains: OptionsCtrlState['standaloneChains']): void;
+    setStandaloneUri(standaloneUri: OptionsCtrlState['standaloneUri']): void;
+    getSelectedChain(): import("@wagmi/chains").Chain | undefined;
+    setSelectedChain(selectedChain: OptionsCtrlState['selectedChain']): void;
+    setIsStandalone(isStandalone: OptionsCtrlState['isStandalone']): void;
+    setIsCustomDesktop(isCustomDesktop: OptionsCtrlState['isCustomDesktop']): void;
+    setIsCustomMobile(isCustomMobile: OptionsCtrlState['isCustomMobile']): void;
+    getAccount(): void;
+    setAddress(address: OptionsCtrlState['address']): void;
+    setIsConnected(isConnected: OptionsCtrlState['isConnected']): void;
+    setProfileName(profileName: OptionsCtrlState['profileName']): void;
+    setProfileAvatar(profileAvatar: OptionsCtrlState['profileAvatar']): void;
+    setProfileLoading(profileLoading: OptionsCtrlState['profileLoading']): void;
+    setBalanceLoading(balanceLoading: OptionsCtrlState['balanceLoading']): void;
+    setBalance(balance: OptionsCtrlState['balance']): void;
+    setIsDataLoaded(isDataLoaded: OptionsCtrlState['isDataLoaded']): void;
+    setIsUiLoaded(isUiLoaded: OptionsCtrlState['isUiLoaded']): void;
+    setWalletConnectVersion(walletConnectVersion: OptionsCtrlState['walletConnectVersion']): void;
+    resetEnsProfile(): void;
+    resetBalance(): void;
+    resetAccount(): void;
+};

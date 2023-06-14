@@ -1,0 +1,10 @@
+import { Provider, TransactionRequest } from '@ethersproject/abstract-provider';
+import { BigNumber } from 'ethers';
+import { L2Provider, ProviderLike } from './interfaces';
+export declare const getL1GasPrice: (l2Provider: ProviderLike) => Promise<BigNumber>;
+export declare const estimateL1Gas: (l2Provider: ProviderLike, tx: TransactionRequest) => Promise<BigNumber>;
+export declare const estimateL1GasCost: (l2Provider: ProviderLike, tx: TransactionRequest) => Promise<BigNumber>;
+export declare const estimateL2GasCost: (l2Provider: ProviderLike, tx: TransactionRequest) => Promise<BigNumber>;
+export declare const estimateTotalGasCost: (l2Provider: ProviderLike, tx: TransactionRequest) => Promise<BigNumber>;
+export declare const isL2Provider: <TProvider extends Provider>(provider: TProvider) => provider is L2Provider<TProvider>;
+export declare const asL2Provider: <TProvider extends Provider>(provider: TProvider) => L2Provider<TProvider>;
