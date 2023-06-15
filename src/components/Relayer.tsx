@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useSigner, useAccount, useNetwork, useWaitForTransaction } from "wagmi";
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { CrossChainMessenger, MessageStatus, CrossChainMessage } from '@eth-optimism/sdk';
+import { ethers } from 'ethers
+
+const l2Provider = new ethers.providers.JsonRpcProvider('https://mainnet.optimism.io', 10)
 
 function getStatusDescription(status: MessageStatus) {
   switch (status) {
@@ -61,7 +64,7 @@ export function Relayer() {
     if (message) {
       const messenger = new CrossChainMessenger({
         l1SignerOrProvider: signer,
-        l2SignerOrProvider: "tbd",
+        l2SignerOrProvider: l2Provider,
         l1ChainId: 1,
         l2ChainId: 10,
       });
