@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useSigner, useProvider } from "wagmi";
 import { CrossChainMessenger, MessageStatus, CrossChainMessage } from '@eth-optimism/sdk';
-import { ethers } from 'ethers
-
-const l2Provider = new ethers.providers.JsonRpcProvider('https://mainnet.optimism.io', 10)
 
 
 function getStatusDescription(status: MessageStatus) {
