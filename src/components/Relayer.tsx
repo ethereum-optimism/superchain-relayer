@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useSigner, useAccount, useNetwork, useWaitForTransaction } from "wagmi";
-import { alchemyProvider } from 'wagmi/providers/alchemy'
+import { useSigner, useProvider } from "wagmi";
 import { CrossChainMessenger, MessageStatus, CrossChainMessage } from '@eth-optimism/sdk';
+
 
 function getStatusDescription(status: MessageStatus) {
   switch (status) {
@@ -25,11 +25,12 @@ function getStatusDescription(status: MessageStatus) {
 }
 
 export function Relayer() {
-  const { address } = useAccount();
   const [value, setValue] = useState("");
-  const [message, setMessage] = useState<CrossChainMessage | null>(null);
   const [messageStatus, setMessageStatus] = useState("");
+
   const { data: signer } = useSigner();
+  const l1Provider = useProvider({ chainId: 1 })
+  const l2Provider = useProvider({ chainId: 10 })
 
   if (!signer) {
     // Handle the case where the signer is not available
@@ -40,39 +41,39 @@ export function Relayer() {
   const fetchMessageStatus = async () => {
     try {
       const messenger = new CrossChainMessenger({
-        l1SignerOrProvider: "tbd", // replace with your L1 provider or signer
-        l2SignerOrProvider: "tbd", // replace with your L2 provider or signer
+        l1SignerOrProvider: l1Provider, // replace with your L1 provider or signer
+        l2SignerOrProvider: l2Provider, // replace with your L2 provider or signer
         l1ChainId: 1, // replace with your L1 chain ID
         l2ChainId: 10, // replace with your L2 chain ID
-        // ... any other properties you want to provide
+        bedrock: true,
       });
-      const messages = await messenger.getMessagesByTransaction(value);
-      setMessage(messages[0]);
-      const status = await messenger.getMessageStatus(messages[0]);
+      // const messages = await messenger.getMessagesByTransaction(value);
+      const status = await messenger.getMessageStatus(value);
       setMessageStatus(getStatusDescription(status));
     } catch (error) {
+      console.error(error)
       setMessageStatus("Invalid transaction hash");
-      setMessage(null);
     }
   }
 
   const executeMessage = async () => {
     console.log("Execute button pressed. Current message status:", messageStatus);
-    if (message) {
+    if (value) {
       const messenger = new CrossChainMessenger({
         l1SignerOrProvider: signer,
-        l2SignerOrProvider: "tbd",
+        l2SignerOrProvider: l2Provider,
         l1ChainId: 1,
         l2ChainId: 10,
+        bedrock: true,
       });
 
       if (messageStatus === "Message is ready to be proved") {
         console.log("Proving message...");
-        await messenger.proveMessage(message);
+        await messenger.proveMessage(value);
         console.log("Message proved.");
       } else if (messageStatus === "Message is ready to be relayed") {
         console.log("Relaying message...");
-        await messenger.finalizeMessage(message);
+        await messenger.finalizeMessage(value);
         console.log("Message relayed.");
       }
     }
@@ -103,4 +104,3 @@ export function Relayer() {
     </div>
   );
 }
-

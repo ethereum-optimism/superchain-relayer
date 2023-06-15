@@ -12,7 +12,7 @@ export function App() {
 
   return (
     <>
-      <h1>Superchain Relayer</h1>
+      <h1>Simple L2 to L1 Message Relayer</h1>
 
       {/** @see https://www.rainbowkit.com/docs/connect-button */}
       <ConnectButton />
