@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSigner, useProvider } from "wagmi";
-import { CrossChainMessenger, MessageStatus, CrossChainMessage } from '@eth-optimism/sdk';
+import { CrossChainMessenger, MessageStatus, CrossChainMessage, L1ChainID } from '@eth-optimism/sdk';
 
 
 function getStatusDescription(status: MessageStatus) {
@@ -25,12 +25,21 @@ function getStatusDescription(status: MessageStatus) {
 }
 
 export function Relayer() {
+  const l2ToL1Map: Record<number, number> = { 10: 1, 420: 5 }; // define L1 and L2 chain mapping
   const [value, setValue] = useState("");
   const [messageStatus, setMessageStatus] = useState("");
+  const [l2ChainId, setL2ChainId] = useState(10); // Set default L2 Chain ID to OP Mainnet
+  const [l1ChainId, setL1ChainId] = useState(l2ToL1Map[l2ChainId]);  // Set default L1 Chain ID based on L2
+
+  const handleNetworkChange = (newL2ChainId: number) => {
+    setL2ChainId(newL2ChainId);
+    setL1ChainId(l2ToL1Map[newL2ChainId]);
+  };
+
 
   const { data: signer } = useSigner();
-  const l1Provider = useProvider({ chainId: 1 })
-  const l2Provider = useProvider({ chainId: 10 })
+  const l1Provider = useProvider({ chainId: l1ChainId })
+  const l2Provider = useProvider({ chainId: l2ChainId })
 
   if (!signer) {
     // Handle the case where the signer is not available
@@ -43,10 +52,13 @@ export function Relayer() {
       const messenger = new CrossChainMessenger({
         l1SignerOrProvider: l1Provider, // replace with your L1 provider or signer
         l2SignerOrProvider: l2Provider, // replace with your L2 provider or signer
-        l1ChainId: 1, // replace with your L1 chain ID
-        l2ChainId: 10, // replace with your L2 chain ID
+        l1ChainId: l1ChainId, // replace with your L1 chain ID
+        l2ChainId: l2ChainId, // replace with your L2 chain ID
         bedrock: true,
       });
+      console.log("L1 chain ID:", l1ChainId);
+      console.log("L2 chain ID:", l2ChainId);
+      console.log("Value:", value);
       // const messages = await messenger.getMessagesByTransaction(value);
       const status = await messenger.getMessageStatus(value);
       setMessageStatus(getStatusDescription(status));
@@ -62,8 +74,8 @@ export function Relayer() {
       const messenger = new CrossChainMessenger({
         l1SignerOrProvider: signer,
         l2SignerOrProvider: l2Provider,
-        l1ChainId: 1,
-        l2ChainId: 10,
+        l1ChainId: l1ChainId,
+        l2ChainId: l2ChainId,
         bedrock: true,
       });
 
@@ -86,7 +98,13 @@ export function Relayer() {
     <div>
       <h2>Search for your L2 transaction to execute a manual withdrawal:</h2>
       <div>
-
+      <label>
+          Select L2 network:
+          <select value={l2ChainId} onChange={(e) => handleNetworkChange(Number(e.target.value))}>
+            <option value={10}>OP Mainnet</option>
+            <option value={420}>OP Goerli</option>
+          </select>
+        </label>
       </div>
       <input
         onChange={(e) => setValue(e.target.value)}

@@ -1,5 +1,5 @@
 # Simple L2 to L1 message relayer
-This repository contains an open-source interface developed for relaying messages from OP Mainnet / OP Goerli (L2) to Ethereum Mainnet / Ethereum Goerli (L1) using the Optimism SDK. 
+This repository contains an open-source user interface developed for relaying messages from OP Mainnet / OP Goerli (L2) to Ethereum Mainnet / Ethereum Goerli (L1) using the Optimism SDK. 
 
 The Simple Relayer was built using https://github.com/ethereum-optimism/optimism-starter
 
