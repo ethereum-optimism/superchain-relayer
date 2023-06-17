@@ -30,6 +30,7 @@ export function Relayer() {
   const [messageStatus, setMessageStatus] = useState("");
   const [l2ChainId, setL2ChainId] = useState(10); // Set default L2 Chain ID to OP Mainnet
   const [l1ChainId, setL1ChainId] = useState(l2ToL1Map[l2ChainId]);  // Set default L1 Chain ID based on L2
+  const [loading, setLoading] = useState(false); // Loading state
 
   const handleNetworkChange = (newL2ChainId: number) => {
     setL2ChainId(newL2ChainId);
@@ -49,6 +50,7 @@ export function Relayer() {
 
   const fetchMessageStatus = async () => {
     try {
+      setLoading(true); // Set loading state to true
       const messenger = new CrossChainMessenger({
         l1SignerOrProvider: l1Provider, // replace with your L1 provider or signer
         l2SignerOrProvider: l2Provider, // replace with your L2 provider or signer
@@ -65,6 +67,8 @@ export function Relayer() {
     } catch (error) {
       console.error(error)
       setMessageStatus("Invalid transaction hash");
+    } finally {
+      setLoading(false); // Set loading state to false
     }
   }
 
@@ -111,13 +115,13 @@ export function Relayer() {
         value={value}
       />
       <button onClick={fetchMessageStatus}>
-        Search
+        {loading ? 'Searching...' : 'Search'}
       </button>
       <button disabled={!canExecute} onClick={executeMessage}>
-        Execute
+        {loading ? 'Loading...' : 'Execute'}
       </button>
       <div>
-        {messageStatus}
+        {loading ? 'Loading message status...' : messageStatus}
       </div>
     </div>
   );
