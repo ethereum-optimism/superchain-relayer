@@ -25,7 +25,7 @@ function getStatusDescription(status: MessageStatus) {
 }
 
 export function Relayer() {
-  const l2ToL1Map: Record<number, number> = { 10: 1, 420: 5 }; // define L1 and L2 chain mapping
+  const l2ToL1Map: Record<number, number> = { 10: 1, 420: 5, 84531: 5 }; // define L1 and L2 chain mapping
   const [value, setValue] = useState("");
   const [messageStatus, setMessageStatus] = useState("");
   const [l2ChainId, setL2ChainId] = useState(10); // Set default L2 Chain ID to OP Mainnet
@@ -67,6 +67,7 @@ export function Relayer() {
     } catch (error) {
       console.error(error)
       setMessageStatus("Invalid transaction hash");
+      console.log("Status:", status);
     } finally {
       setLoading(false); // Set loading state to false
     }
@@ -107,6 +108,7 @@ export function Relayer() {
           <select value={l2ChainId} onChange={(e) => handleNetworkChange(Number(e.target.value))}>
             <option value={10}>OP Mainnet</option>
             <option value={420}>OP Goerli</option>
+            <option value={84531}>Base Goerli</option>
           </select>
         </label>
       </div>
