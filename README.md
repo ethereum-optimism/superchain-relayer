@@ -3,7 +3,7 @@ This repository contains an open-source user interface developed for relaying me
 
 # Getting started 
 
-As a pre-requisite you will need to install Foundry to build your smart contracts. Follow the instructions in https://github.com/ethereum-optimism/optimism-starter for guidance. 
+As a pre-requisite you will need to install Node and Foundry to build your smart contracts. Follow the instructions in https://github.com/ethereum-optimism/optimism-starter for guidance. 
 
 1. Clone/fork the superchain-relayer repo
    ```sh
