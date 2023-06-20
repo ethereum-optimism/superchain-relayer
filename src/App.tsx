@@ -24,6 +24,11 @@ export function App() {
           <hr />
         </>
       )}
+      <div style={{ marginTop: "20px" }}>
+        <a href="https://github.com/zainbacchus/superchain-relayer" target="_blank" rel="noopener noreferrer">
+          Share your feedback on the GitHub Repo
+        </a>
+      </div>
     </>
   );
 }
