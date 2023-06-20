@@ -1,5 +1,5 @@
 # Superchain L2 to L1 message relayer
-This repository contains an open-source user interface developed for relaying messages from OP Mainnet / Base (L2) to Ethereum Mainnet (L1) using the Optimism SDK. 
+This repository contains an open-source user interface developed for relaying messages from OP Chains like OP Mainnet / Base (L2) to Ethereum Mainnet (L1) using the Optimism SDK. 
 
 # Getting started 
 
