@@ -9,5 +9,6 @@ As a pre-requisite you will need to install Node and Foundry. Follow the instruc
    ```sh
    git clone https://github.com/zainbacchus/superchain-relayer.git
    ```
-2. Start the frontend with npm run dev
-3. Open localhost:5173 in your browser
+2. Install dependencies with `npm install`
+3. Start the frontend with `npm run dev`
+4. Open localhost:5173 in your browser
