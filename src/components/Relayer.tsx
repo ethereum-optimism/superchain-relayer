@@ -107,9 +107,9 @@ export function Relayer() {
           Select L2 network:
           <select value={l2ChainId} onChange={(e) => handleNetworkChange(Number(e.target.value))}>
             <option value={10}>OP Mainnet</option>
-            <option value={7777777}>Zora Mainnet</option>
+            <option value={7777777} disabled>Zora Mainnet</option>
             <option value={420}>OP Goerli</option>
-            <option value={84531}>Base Goerli</option>
+            <option value={84531} disabled>Base Goerli</option>
           </select>
         </label>
       </div>
