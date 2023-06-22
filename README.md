@@ -7,7 +7,7 @@ As a pre-requisite you will need to install Node and Foundry. Follow the instruc
 
 1. Clone/fork the superchain-relayer repo
    ```sh
-   git clone https://github.com/zainbacchus/superchain-relayer.git
+   git clone https://github.com/ethereum-optimism/superchain-relayer.git
    ```
 2. Install dependencies with `npm install`
 3. Start the frontend with `npm run dev`
