@@ -16,5 +16,5 @@
     "target": "ESNext",
     "useDefineForClassFields": true
   },
-  "include": ["./src", "prettierrc.js"]
+  "include": ["./src"]
 }
