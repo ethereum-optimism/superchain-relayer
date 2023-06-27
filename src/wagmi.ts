@@ -1,16 +1,15 @@
-import { configureChains, createClient } from "wagmi";
-import { mainnet, goerli, optimism, optimismGoerli, baseGoerli } from "wagmi/chains";
-import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
-// import { alchemyProvider } from "wagmi/providers/alchemy";
-import { getDefaultWallets } from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig } from 'wagmi'
+import { mainnet, goerli, optimism, optimismGoerli } from 'wagmi/chains'
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 
 /**
  * Tell wagmi which chains you want to support
  * To add a new chain simply import it and add it here
  * @see https://wagmi.sh/react/providers/configuring-chains
  */
-const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet, goerli, optimism, optimismGoerli, baseGoerli],
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [mainnet, goerli, optimism, optimismGoerli],
   [
     /**
      * Uncomment this line to use Alchemy as your provider
@@ -23,17 +22,17 @@ const { chains, provider, webSocketProvider } = configureChains(
      */
     jsonRpcProvider({
       rpc: (chain) => {
-        return { http: chain.rpcUrls.default.http[0] };
+        return { http: chain.rpcUrls.default.http[0] }
       },
     }),
   ],
-);
+)
 
 /**
  * Export chains to be used by rainbowkit
  * @see https://wagmi.sh/react/providers/configuring-chains
  */
-export { chains };
+export { chains }
 
 /**
  * Configures wagmi connectors for rainbowkit
@@ -41,18 +40,18 @@ export { chains };
  * @see https://wagmi.sh/react/connectors
  */
 const { connectors } = getDefaultWallets({
-  appName:
-    "Optimism attestation station + Forge + Wagmi + RainbowKit + Vite App",
+  appName: 'Superchain Relayer',
+  projectId: '400e116ec5bf693fc9dfb5529f379332',
   chains,
-});
+})
 
 /**
  * Creates a singleton wagmi client for the app
  * @see https://wagmi.sh/react/client
  */
-export const client = createClient({
+export const config = createConfig({
   autoConnect: true,
   connectors: connectors,
-  provider,
-  webSocketProvider,
-});
+  publicClient,
+  webSocketPublicClient,
+})
