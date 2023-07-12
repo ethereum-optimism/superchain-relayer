@@ -118,7 +118,9 @@ export function Relayer() {
     const renderMessage = () => {
     if (loading) {
       return 'Loading message status...'
-    } else if (messageStatus) {
+    } else if (numMessages == 0 && messageStatus) {
+      return 'Message status: ' + messageStatus
+    } else if (numMessages > 0 && messageStatus) {
       return 'Message status of message ' + indexValue + ': '  + messageStatus
     } else {
       return ''
