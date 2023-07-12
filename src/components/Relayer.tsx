@@ -133,7 +133,7 @@ export function Relayer() {
     } else if (numMessages > 1) {
       return (
         <div>
-          This transaction has multiple messages associated with it. To check the status of other messages select the index of the index then press search:
+          This transaction has multiple messages associated with it. To check the status of other messages select the index of the message then press search:
           <input
             type="number"
             name="index"
