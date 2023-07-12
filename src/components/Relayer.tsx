@@ -25,7 +25,9 @@ function getStatusDescription(status: MessageStatus) {
 }
 
 export function Relayer() {
+  const [indexValue, setIndexValue] = useState<number>(0)
   const [value, setValue] = useState('')
+  const [numMessages, setNumMessages] = useState<number>(0)
   const [messageStatus, setMessageStatus] = useState('')
   const [l2ChainId, setL2ChainId] = useState(10) // Set default L2 Chain ID to OP Mainnet
   const l1ChainId = L1ChainIdByL2ChainId[l2ChainId]
@@ -58,9 +60,10 @@ export function Relayer() {
       console.log('L1 chain ID:', l1ChainId)
       console.log('L2 chain ID:', l2ChainId)
       console.log('Value:', value)
-      // const messages = await messenger.getMessagesByTransaction(value);
+      const messages = await messenger.getMessagesByTransaction(value);
       const status = await messenger.getMessageStatus(value)
       setMessageStatus(getStatusDescription(status))
+      setNumMessages(messages.length)
     } catch (error) {
       console.error(error)
       setMessageStatus('Invalid transaction hash')
@@ -99,6 +102,57 @@ export function Relayer() {
   const canExecute =
     messageStatus === 'Message is ready to be relayed' ||
     messageStatus === 'Message is ready to be proved'
+  
+
+    const renderNumMessages = () => {
+      if (loading) {
+        return 'Loading number of messages...'
+      } else if (numMessages) {
+        return 'Number of messages associated with the transaction: ' + numMessages
+      } else {
+        return ''
+      }
+    }
+  
+  
+    const renderMessage = () => {
+    if (loading) {
+      return 'Loading message status...'
+    } else if (messageStatus) {
+      return 'Message status of message ' + indexValue + ': '  + messageStatus
+    } else {
+      return ''
+    }
+  }
+
+  const renderIndex = () => {
+    if (loading) {
+      return '';
+    } else if (numMessages > 1) {
+      return (
+        <div>
+          This transaction has multiple messages associated with it. To check the status of other messages select the index of the index then press search:
+          <input
+            type="number"
+            name="index"
+            min="1"
+            max={numMessages}
+            defaultValue="1"
+            onChange={handleIndexChange}
+          />
+        </div>
+      );
+    } else {
+      return '';
+    }
+  };
+  
+  const handleIndexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(e.target.value);
+    if (value >= 1 && value <= numMessages) {
+      setIndexValue(value);
+    }
+  };
 
   return (
     <div>
@@ -128,7 +182,9 @@ export function Relayer() {
       <button disabled={!canExecute} onClick={executeMessage}>
         {loading ? 'Loading...' : 'Execute'}
       </button>
-      <div>{loading ? 'Loading message status...' : messageStatus}</div>
+      <div>{renderIndex()}</div>
+      <div>{renderNumMessages()}</div>
+      <div>{renderMessage()}</div>
     </div>
   )
 }
