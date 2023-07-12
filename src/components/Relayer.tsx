@@ -25,10 +25,10 @@ function getStatusDescription(status: MessageStatus) {
 }
 
 export function Relayer() {
-  const [indexValue, setIndexValue] = useState<number>(0)
-  const [value, setValue] = useState('')
-  const [numMessages, setNumMessages] = useState<number>(0)
-  const [messageStatus, setMessageStatus] = useState('')
+  const [indexValue, setIndexValue] = useState<number>(0) // Determine the index of the message the user wants to return
+  const [numMessages, setNumMessages] = useState<number>(0) // Determine the number of the message associated with a transaction
+  const [value, setValue] = useState('') // Transaction hash that user wants queried
+  const [messageStatus, setMessageStatus] = useState('') // Message status of queried message 
   const [l2ChainId, setL2ChainId] = useState(10) // Set default L2 Chain ID to OP Mainnet
   const l1ChainId = L1ChainIdByL2ChainId[l2ChainId]
   const [loading, setLoading] = useState(false) // Loading state
@@ -60,8 +60,8 @@ export function Relayer() {
       console.log('L1 chain ID:', l1ChainId)
       console.log('L2 chain ID:', l2ChainId)
       console.log('Value:', value)
-      const messages = await messenger.getMessagesByTransaction(value);
-      const status = await messenger.getMessageStatus(value)
+      const messages = await messenger.getMessagesByTransaction(value); // get number of messages associated with the transaction
+      const status = await messenger.getMessageStatus(value) // needs to be updated to query based on the index the user is interested in
       setMessageStatus(getStatusDescription(status))
       setNumMessages(messages.length)
     } catch (error) {
