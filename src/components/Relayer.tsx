@@ -106,8 +106,8 @@ export function Relayer() {
 
     const renderNumMessages = () => {
       if (loading) {
-        return 'Loading number of messages...'
-      } else if (numMessages) {
+        return ''
+      } else if (numMessages > 1) {
         return 'Number of messages associated with the transaction: ' + numMessages
       } else {
         return ''
@@ -118,9 +118,9 @@ export function Relayer() {
     const renderMessage = () => {
     if (loading) {
       return 'Loading message status...'
-    } else if (numMessages == 0 && messageStatus) {
-      return 'Message status: ' + messageStatus
-    } else if (numMessages > 0 && messageStatus) {
+    } else if (numMessages < 2 && messageStatus) {
+      return 'Message status: '  + messageStatus
+    } else if (numMessages > 1 && messageStatus) {
       return 'Message status of message ' + indexValue + ': '  + messageStatus
     } else {
       return ''
@@ -133,7 +133,7 @@ export function Relayer() {
     } else if (numMessages > 1) {
       return (
         <div>
-          This transaction has multiple messages associated with it. To check the status of other messages select the index of the message then press search:
+          This transaction has multiple messages associated with it. To check the status of other messages select the index of the index then press search:
           <input
             type="number"
             name="index"
