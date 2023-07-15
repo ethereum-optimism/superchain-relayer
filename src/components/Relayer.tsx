@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { CrossChainMessenger, MessageStatus } from '@eth-optimism/sdk'
 import { L1ChainIdByL2ChainId } from '../constants'
 import { useEthersProvider, useEthersSigner } from '../hooks/ethersAdapters'
+import { useMixpanel } from '../utils/mixpanel'
 
 function getStatusDescription(status: MessageStatus) {
   switch (status) {
@@ -26,11 +27,13 @@ function getStatusDescription(status: MessageStatus) {
 
 export function Relayer() {
   const [value, setValue] = useState('')
-  const [messageStatus, setMessageStatus] = useState<{ status: string, index: number }[]>([]);
+  const [messageStatus, setMessageStatus] = useState<
+    { status: string; index: number }[]
+  >([])
   const [l2ChainId, setL2ChainId] = useState(10) // Set default L2 Chain ID to OP Mainnet
   const l1ChainId = L1ChainIdByL2ChainId[l2ChainId]
   const [loading, setLoading] = useState(false) // Loading state
-
+  const mixpanel = useMixpanel()
   const handleNetworkChange = (newL2ChainId: number) => {
     setL2ChainId(newL2ChainId)
   }
@@ -58,17 +61,21 @@ export function Relayer() {
       console.log('L1 chain ID:', l1ChainId)
       console.log('L2 chain ID:', l2ChainId)
       console.log('Value:', value)
-      const messages = await messenger.getMessagesByTransaction(value);
+      const messages = await messenger.getMessagesByTransaction(value)
       const statuses = await Promise.all(
         messages.map(async (message, index) => {
-          const status = await messenger.getMessageStatus(value, index);
-          return { status: getStatusDescription(status), index };
-        })
-      );
+          const status = await messenger.getMessageStatus(value, index)
+          return { status: getStatusDescription(status), index }
+        }),
+      )
       setMessageStatus(statuses)
+      mixpanel.track('fetch-message-status', {
+        value,
+        statuses,
+      })
     } catch (error) {
       console.error(error)
-      setMessageStatus([{status:'Invalid transaction hash', index:0}]);
+      setMessageStatus([{ status: 'Invalid transaction hash', index: 0 }])
     } finally {
       setLoading(false) // Set loading state to false
     }
@@ -89,15 +96,25 @@ export function Relayer() {
       })
 
       for (const { status, index } of messageStatus) {
-        console.log('Executing message at index:', index);
+        console.log('Executing message at index:', index)
         if (status === 'Message is ready to be proved') {
-          console.log('Proving message...');
-          await messenger.proveMessage(value, undefined, index);
-          console.log('Message proved.');
+          console.log('Proving message...')
+          await messenger.proveMessage(value, undefined, index)
+          console.log('Message proved.')
+          mixpanel.track('message-proved', {
+            value,
+            status,
+            index,
+          })
         } else if (status === 'Message is ready to be relayed') {
-          console.log('Relaying message...');
-          await messenger.finalizeMessage(value, undefined, index);
-          console.log('Message relayed.');
+          console.log('Relaying message...')
+          await messenger.finalizeMessage(value, undefined, index)
+          console.log('Message relayed.')
+          mixpanel.track('message-relayed', {
+            value,
+            status,
+            index,
+          })
         }
       }
     }
@@ -106,8 +123,8 @@ export function Relayer() {
   const canExecute = messageStatus.some(
     (message) =>
       message.status === 'Message is ready to be relayed' ||
-      message.status === 'Message is ready to be proved'
-  );
+      message.status === 'Message is ready to be proved',
+  )
 
   return (
     <div>
@@ -138,15 +155,13 @@ export function Relayer() {
         {loading ? 'Loading...' : 'Execute'}
       </button>
       <div>
-        {loading ? (
-          'Loading message status...'
-        ) : (
-          messageStatus.map((message) => (
-            <div key={message.index}>
-              Status at index {message.index}: {message.status}
-            </div>
-          ))
-        )}
+        {loading
+          ? 'Loading message status...'
+          : messageStatus.map((message) => (
+              <div key={message.index}>
+                Status at index {message.index}: {message.status}
+              </div>
+            ))}
       </div>
     </div>
   )
