@@ -137,13 +137,10 @@ export function Relayer() {
             onChange={(e) => handleNetworkChange(Number(e.target.value))}
           >
             <option value={10}>OP Mainnet</option>
-            <option value={7777777} disabled>
-              Zora Mainnet
-            </option>
+            <option value={7777777}>Zora </option>
             <option value={420}>OP Goerli</option>
-            <option value={84531} disabled>
-              Base Goerli
-            </option>
+            <option value={999}>Zora Testnet </option>
+            <option value={84531}> Base Goerli</option>
           </select>
         </label>
       </div>
