@@ -52,7 +52,7 @@ export function Relayer() {
     try {
       setLoading(true) // Set loading state to true
       const messenger = new CrossChainMessenger({
-        l1SignerOrProvider: l1Provider, // replace with your L1 provider or signer
+        l1SignerOrProvider: l1Signer, // replace with your L1 provider or signer
         l2SignerOrProvider: l2Provider, // replace with your L2 provider or signer
         l1ChainId: l1ChainId, // replace with your L1 chain ID
         l2ChainId: l2ChainId, // replace with your L2 chain ID
