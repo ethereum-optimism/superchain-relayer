@@ -152,11 +152,11 @@
     },
     "settings": {
       "remappings": [
-        ":@eth-optimism/contracts-bedrock/=node_modules/@eth-optimism/contracts-bedrock/",
-        ":@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/",
-        ":@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/",
-        ":ds-test/=contracts/lib/forge-std/lib/ds-test/src/",
-        ":forge-std/=contracts/lib/forge-std/src/"
+        "@eth-optimism/contracts-bedrock/=node_modules/@eth-optimism/contracts-bedrock/",
+        "@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/",
+        "@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/",
+        "ds-test/=contracts/lib/forge-std/lib/ds-test/src/",
+        "forge-std/=contracts/lib/forge-std/src/"
       ],
       "optimizer": {
         "enabled": true,
