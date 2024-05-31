@@ -3,7 +3,7 @@ import { useAccount } from 'wagmi'
 import { useEffect } from 'react'
 
 import { Relayer } from '@/components'
-import { useMixpanel } from '@/mixpanel/mixpanel'
+import { useMixpanel } from '@/global-context/mixpanelContext'
 
 export function App() {
   /**
@@ -31,7 +31,7 @@ export function App() {
   return (
     <>
       <h1>Superchain L2 to L1 Message Relayer</h1>
-      <ConnectButton chainStatus="none" />
+      <ConnectButton />
 
       {isConnected && (
         <>

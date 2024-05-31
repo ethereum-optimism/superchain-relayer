@@ -10,5 +10,8 @@ export const envVars = parseEnv(
     VITE_ENVIRONMENT: {
       schema: z.enum(['development', 'production']),
     },
+    VITE_WALLETCONNECT_PROJECT_ID: {
+      schema: z.string(),
+    },
   }),
 )
