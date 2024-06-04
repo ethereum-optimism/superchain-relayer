@@ -39,10 +39,3 @@ export const L1ChainIdByL2ChainId: Record<number, number> = l1L2Pairs.reduce<
   acc[l2ChainId] = l1ChainId
   return acc
 }, {})
-
-export const L2ChainIdByL1ChainId: Record<number, number> = l1L2Pairs.reduce<
-  Record<number, number>
->((acc, { l1ChainId, l2ChainId }) => {
-  acc[l1ChainId] = l2ChainId
-  return acc
-}, {})

@@ -3,34 +3,46 @@ import { getDefaultConfig } from '@rainbow-me/rainbowkit'
 import { http } from 'wagmi'
 import {
   mainnet,
-  goerli,
   optimism,
-  optimismGoerli,
   zora,
-  zoraTestnet,
-  baseGoerli,
+  sepolia,
+  fraxtal,
+  base,
+  mode,
+  baseSepolia,
+  modeTestnet,
+  zoraSepolia,
+  optimismSepolia,
 } from 'wagmi/chains'
 import { envVars } from '@/envVars'
+import {
+  ChainIdsToConfigure,
+  chainsToConfigure,
+} from '@/chain-pairs/supportedChainPairs'
+import { Transport } from 'viem'
+import { fraxtalSepolia } from '@/chain-pairs/chains/fraxtalSepolia'
+
+const transports = {
+  // Mainnet chains
+  [mainnet.id]: http(),
+  [base.id]: http(),
+  [fraxtal.id]: http(),
+  [mode.id]: http(),
+  [optimism.id]: http(),
+  [zora.id]: http(),
+
+  // Sepolia chains
+  [sepolia.id]: http(),
+  [baseSepolia.id]: http(),
+  [fraxtalSepolia.id]: http(),
+  [modeTestnet.id]: http(),
+  [optimismSepolia.id]: http(),
+  [zoraSepolia.id]: http(),
+} as const satisfies Record<ChainIdsToConfigure, Transport>
 
 export const rainbowKitWagmiConfig = getDefaultConfig({
   appName: 'Superchain Relayer',
   projectId: envVars.VITE_WALLETCONNECT_PROJECT_ID,
-  chains: [
-    mainnet,
-    goerli,
-    optimism,
-    optimismGoerli,
-    zora,
-    zoraTestnet,
-    baseGoerli,
-  ],
-  transports: {
-    [mainnet.id]: http(),
-    [goerli.id]: http(),
-    [optimism.id]: http(),
-    [optimismGoerli.id]: http(),
-    [zora.id]: http(),
-    [zoraTestnet.id]: http(),
-    [baseGoerli.id]: http(),
-  },
+  chains: chainsToConfigure,
+  transports,
 })
