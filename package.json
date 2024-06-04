@@ -11,15 +11,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@eth-optimism/atst": "^0.0.0-20230306200511",
-    "@eth-optimism/contracts-bedrock": "^0.12.1",
-    "@eth-optimism/contracts-periphery": "^1.0.7",
-    "@eth-optimism/sdk": "^0.0.0-20230711223728",
     "@rainbow-me/rainbowkit": "^2.1.2",
     "@tanstack/react-query": "^5.40.0",
     "@wagmi/core": "^2.10.5",
     "buffer": "^6.0.3",
-    "ethers": "^5.7.2",
     "mixpanel-browser": "^2.47.0",
     "process": "^0.11.10",
     "react": "^18.2.0",
