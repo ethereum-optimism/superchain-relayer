@@ -1,3 +1,4 @@
+import path from 'path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
@@ -13,6 +14,7 @@ export default defineConfig({
     alias: {
       process: 'process/browser',
       util: 'util',
+      '@': path.resolve(__dirname, './src'),
     },
   },
   /**

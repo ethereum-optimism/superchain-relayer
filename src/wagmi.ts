@@ -1,5 +1,13 @@
 import { configureChains, createConfig } from 'wagmi'
-import { mainnet, goerli, optimism, optimismGoerli, zora, zoraTestnet, baseGoerli } from 'wagmi/chains'
+import {
+  mainnet,
+  goerli,
+  optimism,
+  optimismGoerli,
+  zora,
+  zoraTestnet,
+  baseGoerli,
+} from 'wagmi/chains'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { CrossChainMessenger, MessageStatus } from '@eth-optimism/sdk'
-import { L1ChainIdByL2ChainId } from '../constants'
-import { useEthersProvider, useEthersSigner } from '../hooks/ethersAdapters'
-import { useMixpanel } from '../utils/mixpanel'
+import { L1ChainIdByL2ChainId } from '@/constants'
+import { useEthersProvider, useEthersSigner } from '@/hooks/ethersAdapters'
+import { useMixpanel } from '@/mixpanel/mixpanel'
 
 function getStatusDescription(status: MessageStatus) {
   switch (status) {
