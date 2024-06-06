@@ -8,9 +8,7 @@ import {
   sepolia,
   fraxtal,
   base,
-  mode,
   baseSepolia,
-  modeTestnet,
   zoraSepolia,
   optimismSepolia,
 } from 'wagmi/chains'
@@ -27,7 +25,6 @@ const transports = {
   [mainnet.id]: http(),
   [base.id]: http(),
   [fraxtal.id]: http(),
-  [mode.id]: http(),
   [optimism.id]: http(),
   [zora.id]: http(),
 
@@ -35,7 +32,6 @@ const transports = {
   [sepolia.id]: http(),
   [baseSepolia.id]: http(),
   [fraxtalSepolia.id]: http(),
-  [modeTestnet.id]: http(),
   [optimismSepolia.id]: http(),
   [zoraSepolia.id]: http(),
 } as const satisfies Record<ChainIdsToConfigure, Transport>

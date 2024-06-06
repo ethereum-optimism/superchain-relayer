@@ -2,8 +2,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
 import { useEffect } from 'react'
 
-import { Relayer } from '@/components'
 import { useMixpanel } from '@/global-context/mixpanelContext'
+import { WithdrawalRelayer } from '@/components/WithdrawalRelayer'
 
 export function App() {
   /**
@@ -31,15 +31,10 @@ export function App() {
   return (
     <>
       <h1>Superchain L2 to L1 Message Relayer</h1>
-      <ConnectButton />
+      <ConnectButton chainStatus={'none'} />
 
-      {isConnected && (
-        <>
-          <hr />
-          <Relayer />
-          <hr />
-        </>
-      )}
+      <WithdrawalRelayer />
+
       <div style={{ marginTop: '20px' }}>
         <a
           href="https://github.com/ethereum-optimism/superchain-relayer"
