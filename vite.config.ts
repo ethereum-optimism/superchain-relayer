@@ -12,8 +12,6 @@ export default defineConfig({
      * @see https://vitejs.dev/config/shared-options.html#resolve-alias
      */
     alias: {
-      process: 'process/browser',
-      util: 'util',
       '@': path.resolve(__dirname, './src'),
     },
   },
