@@ -11,7 +11,7 @@ As a pre-requisite, you will need to install Node and Foundry. Follow the instru
 2. Install the necessary node packages:
    ```sh
    cd superchain-relayer
-   npm install
+   pnpm i
    ```
-3. Start the frontend with `npm run dev`
+3. Start the frontend with `pnpm dev`
 4. Open localhost:5173 in your browser
