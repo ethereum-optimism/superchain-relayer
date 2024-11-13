@@ -5,6 +5,8 @@ import { useEffect } from 'react'
 import { useMixpanel } from '@/global-context/mixpanelContext'
 import { WithdrawalRelayer } from '@/components/WithdrawalRelayer'
 
+import { ExternalLink } from 'lucide-react'
+
 export function App() {
   /**
    * Wagmi hook for getting account information
@@ -29,21 +31,26 @@ export function App() {
   }, [isConnected])
 
   return (
-    <>
-      <h1>Superchain L2 to L1 Message Relayer</h1>
+    <div className="container max-w-3xl p-4 mx-auto space-y-6">
+      <div className="text-2xl font-bold sm:text-3xl">
+        Superchain L2 to L1 Message Relayer
+      </div>
+
       <ConnectButton chainStatus={'none'} />
 
       <WithdrawalRelayer />
 
-      <div style={{ marginTop: '20px' }}>
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <ExternalLink className="w-4 h-4" />
         <a
           href="https://github.com/ethereum-optimism/superchain-relayer"
           target="_blank"
           rel="noopener noreferrer"
+          className="hover:text-primary hover:underline"
         >
           Share your feedback on the GitHub Repo
         </a>
       </div>
-    </>
+    </div>
   )
 }

@@ -15,6 +15,25 @@ import { ReadyToFinalize } from '@/components/withdrawal-status/ReadyToFinalize'
 import { WaitingToFinalize } from '@/components/withdrawal-status/WaitingToFinalize'
 import { Finalized } from '@/components/withdrawal-status/Finalized'
 
+import { Search } from 'lucide-react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+
 const WithdrawalTransactionStatus = ({
   transactionHash,
   chainPair,
@@ -39,19 +58,37 @@ const WithdrawalTransactionStatus = ({
     })
 
   if (isTransactionReceiptLoading) {
-    return <div>Loading transaction...</div>
+    return (
+      <Alert>
+        <AlertDescription>Loading transaction...</AlertDescription>
+      </Alert>
+    )
   }
 
   if (!transactionReceipt) {
-    return <div>Transaction not found</div>
+    return (
+      <Alert variant="destructive">
+        <AlertDescription>Transaction not found</AlertDescription>
+      </Alert>
+    )
   }
 
   if (logs.length === 0) {
-    return <div>No withdrawal messages found in transaction</div>
+    return (
+      <Alert variant="destructive">
+        <AlertDescription>
+          No withdrawal messages found in transaction
+        </AlertDescription>
+      </Alert>
+    )
   }
 
   if (isWithdrawalStatusLoading || !withdrawalStatus) {
-    return <div>Loading withdrawal status...</div>
+    return (
+      <Alert>
+        <AlertDescription>Loading withdrawal status...</AlertDescription>
+      </Alert>
+    )
   }
 
   if (withdrawalStatus === 'waiting-to-prove') {
@@ -61,10 +98,17 @@ const WithdrawalTransactionStatus = ({
   }
   if (withdrawalStatus === 'ready-to-prove') {
     return (
-      <div>
-        <div>Ready to prove</div>
-        <ReadyToProve transactionHash={transactionHash} chainPair={chainPair} />
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Ready to Prove</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ReadyToProve
+            transactionHash={transactionHash}
+            chainPair={chainPair}
+          />
+        </CardContent>
+      </Card>
     )
   }
 
@@ -79,13 +123,17 @@ const WithdrawalTransactionStatus = ({
 
   if (withdrawalStatus === 'ready-to-finalize') {
     return (
-      <div>
-        <div>Ready to finalize</div>
-        <ReadyToFinalize
-          transactionHash={transactionHash}
-          chainPair={chainPair}
-        />
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Ready to Finalize</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ReadyToFinalize
+            transactionHash={transactionHash}
+            chainPair={chainPair}
+          />
+        </CardContent>
+      </Card>
     )
   }
 
@@ -103,45 +151,71 @@ export const WithdrawalRelayer = () => {
   >()
 
   return (
-    <div>
-      <h2>Search for your L2 transaction to execute a manual withdrawal:</h2>
-      <div>
-        <select
-          value={selectedChainPair.l2Chain.id}
-          onChange={(e) => {
-            const chainPair =
-              supportedChainPairByL2ChainId[Number(e.target.value)]
-            if (chainPair) {
-              setSelectedChainPair(chainPair)
-            }
-          }}
-        >
-          {supportedChainPairs.map((chainPair) => (
-            <option key={chainPair.l2Chain.id} value={chainPair.l2Chain.id}>
-              {chainPair.l2Chain.name}
-            </option>
-          ))}
-        </select>
-        <input
-          placeholder="0xabcdbeef..."
-          onChange={(e) => setWithdrawalTransactionHashText(e.target.value)}
-          value={withdrawalTransactionHashText}
-        />
-        <button
-          onClick={() => {
-            setSelectedTransactionHash(withdrawalTransactionHashText as Hash)
-          }}
-        >
-          Search
-        </button>
-      </div>
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">
+            L2 to L1 Withdrawal Relayer
+          </CardTitle>
+          <CardDescription>
+            Search for your L2 transaction to execute a manual withdrawal
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <Select
+              value={selectedChainPair.l2Chain.id.toString()}
+              onValueChange={(value) => {
+                const chainPair = supportedChainPairByL2ChainId[Number(value)]
+                if (chainPair) {
+                  setSelectedChainPair(chainPair)
+                }
+              }}
+            >
+              <SelectTrigger className="w-full sm:w-[200px]">
+                <SelectValue placeholder="Select L2 Chain" />
+              </SelectTrigger>
+              <SelectContent>
+                {supportedChainPairs.map((chainPair) => (
+                  <SelectItem
+                    key={chainPair.l2Chain.id}
+                    value={chainPair.l2Chain.id.toString()}
+                  >
+                    {chainPair.l2Chain.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <div className="flex flex-1 gap-2 font-mono">
+              <Input
+                placeholder="0xabcdbeef..."
+                value={withdrawalTransactionHashText}
+                onChange={(e) =>
+                  setWithdrawalTransactionHashText(e.target.value)
+                }
+                className="flex-1"
+              />
+              <Button
+                onClick={() =>
+                  setSelectedTransactionHash(
+                    withdrawalTransactionHashText as Hash,
+                  )
+                }
+              >
+                <Search className="w-4 h-4 mr-2" />
+                Search
+              </Button>
+            </div>
+          </div>
 
-      {selectedTransactionHash && (
-        <WithdrawalTransactionStatus
-          transactionHash={selectedTransactionHash}
-          chainPair={selectedChainPair}
-        />
-      )}
-    </div>
+          {selectedTransactionHash && (
+            <WithdrawalTransactionStatus
+              transactionHash={selectedTransactionHash}
+              chainPair={selectedChainPair}
+            />
+          )}
+        </CardContent>
+      </Card>
+    </>
   )
 }
