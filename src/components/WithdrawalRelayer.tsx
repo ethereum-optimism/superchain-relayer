@@ -57,6 +57,8 @@ const WithdrawalTransactionStatus = ({
       chainPair: chainPair,
     })
 
+  const { status, proofSubmitter } = withdrawalStatus ?? {}
+
   if (isTransactionReceiptLoading) {
     return (
       <Alert>
@@ -91,12 +93,12 @@ const WithdrawalTransactionStatus = ({
     )
   }
 
-  if (withdrawalStatus === 'waiting-to-prove') {
+  if (status === 'waiting-to-prove') {
     return (
       <WaitingToProve transactionHash={transactionHash} chainPair={chainPair} />
     )
   }
-  if (withdrawalStatus === 'ready-to-prove') {
+  if (status === 'ready-to-prove') {
     return (
       <Card>
         <CardHeader>
@@ -112,7 +114,7 @@ const WithdrawalTransactionStatus = ({
     )
   }
 
-  if (withdrawalStatus === 'waiting-to-finalize') {
+  if (status === 'waiting-to-finalize') {
     return (
       <WaitingToFinalize
         transactionHash={transactionHash}
@@ -121,7 +123,7 @@ const WithdrawalTransactionStatus = ({
     )
   }
 
-  if (withdrawalStatus === 'ready-to-finalize') {
+  if (status === 'ready-to-finalize') {
     return (
       <Card>
         <CardHeader>
@@ -131,6 +133,7 @@ const WithdrawalTransactionStatus = ({
           <ReadyToFinalize
             transactionHash={transactionHash}
             chainPair={chainPair}
+            proofSubmitter={proofSubmitter}
           />
         </CardContent>
       </Card>

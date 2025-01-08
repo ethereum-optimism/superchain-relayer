@@ -1,48 +1,18 @@
 import { SupportedChainPair } from '@/chain-pairs/supportedChainPairs'
-import { rainbowKitWagmiConfig } from '@/global-context/rainbowKitWagmiConfig'
 import { useWithdrawalMessage } from '@/hooks/useWithdrawalMessage'
-import { useMutation } from '@tanstack/react-query'
-import { getWalletClient, switchChain } from '@wagmi/core'
-import { Hash } from 'viem'
-import { walletActionsL1, GetWithdrawalsReturnType } from 'viem/op-stack'
+import { Address, Hash } from 'viem'
 import { useTransactionReceipt } from 'wagmi'
 
-const useWriteFinalizeWithdrawal = () => {
-  return useMutation({
-    mutationFn: async ({
-      chainPair,
-      withdrawal,
-    }: {
-      chainPair: SupportedChainPair
-      withdrawal: GetWithdrawalsReturnType[number]
-    }) => {
-      if (!withdrawal) {
-        return
-      }
-
-      await switchChain(rainbowKitWagmiConfig, {
-        chainId: chainPair.l1Chain.id,
-      })
-
-      const walletClient = await getWalletClient(rainbowKitWagmiConfig, {
-        chainId: chainPair.l1Chain.id,
-      })
-
-      // @ts-ignore TODO fix types for expected chains
-      return await walletClient.extend(walletActionsL1()).finalizeWithdrawal({
-        withdrawal,
-        targetChain: chainPair.l2Chain,
-      })
-    },
-  })
-}
+import { useWriteFinalizeWithdrawal } from '@/hooks/useWriteFinalizeWithdrawal'
 
 export const ReadyToFinalize = ({
   transactionHash,
   chainPair,
+  proofSubmitter,
 }: {
   transactionHash: Hash
   chainPair: SupportedChainPair
+  proofSubmitter: Address | undefined
 }) => {
   const { data: receipt, isLoading } = useTransactionReceipt({
     hash: transactionHash,
@@ -63,7 +33,7 @@ export const ReadyToFinalize = ({
           if (!withdrawal) {
             return
           }
-          mutate({ chainPair, withdrawal })
+          mutate({ chainPair, withdrawal, proofSubmitter })
         }}
       >
         Finalize
