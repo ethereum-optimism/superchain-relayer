@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/*"
+  to = "https://console.optimism.io/relayer"
+  force = true
